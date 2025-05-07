@@ -31,3 +31,27 @@ jobs:
           with:
             name: Mocha-Test-Result
             path: test-results.xml
+
+    code-coverage:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4.2.2
+
+        - name: Setup Node.js environment
+          uses: actions/setup-node@v3.9.1
+          with:
+            node-version: 18
+
+        - name: Install NodeJS dependencies
+          run: npm install
+
+        - name: Run Code-coverage command
+          run: npm run code-coverage
+
+        - name: Upload a Build Artifact
+          uses: actions/upload-artifact@v4.6.2
+          with:
+            name: Code-Coverage-Result
+            path: coverage
+            retenion-days: 5
