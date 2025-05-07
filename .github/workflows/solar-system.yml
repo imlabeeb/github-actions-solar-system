@@ -61,3 +61,26 @@ jobs:
             name: Code-Coverage-Result
             path: coverage
             retenion-days: 5
+
+
+    dev-deploy:
+        runs-on: ubuntu-latest
+        needs: docker
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: install kubectl
+          uses: azure/setup-kubectl@v4
+          with:
+            version: 'v1.28.1'
+          id: kube-install
+        
+        - name: set context
+          uses: azure/k8s-set-context@v4
+          with:
+            method: kubeconfig
+            kubeconfig: ${{ secrets.KUBECONFIG }}
+
+        - name: kube command
+          run: kubectl version -o yaml
